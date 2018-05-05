@@ -52,12 +52,12 @@ def get_welcome_response():
     session_attributes = {}
     card_title = "Welcome"
     speech_output = "ようこそ、色設定へ。" \
-                    "Please tell me your favorite color by saying, " \
-                    "my favorite color is red"
+                    "あなたの好きな色を言ってください。例えば、 " \
+                    "私の色は 赤 です。と、言ってください。"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
-    reprompt_text = "Please tell me your favorite color by saying, " \
-                    "my favorite color is red."
+    reprompt_text = "あなたの好きな色を言ってください。例えば、 " \
+                    "私の色は 赤 です。と、言ってください。"
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
@@ -65,7 +65,7 @@ def get_welcome_response():
 
 def handle_session_end_request():
     card_title = "Session Ended"
-    speech_output = "Thank you for trying the Alexa Skills Kit sample. " \
+    speech_output = "色設定をお試しいただきありがとうございました。" \
                     "Have a nice day! "
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
@@ -89,18 +89,17 @@ def set_color_in_session(intent, session):
     if 'Color' in intent['slots']:
         favorite_color = intent['slots']['Color']['value']
         session_attributes = create_favorite_color_attributes(favorite_color)
-        speech_output = "I now know your favorite color is " + \
+        speech_output = "あなたの好きな色は、" + \
                         favorite_color + \
-                        ". You can ask me your favorite color by saying, " \
-                        "what's my favorite color?"
-        reprompt_text = "You can ask me your favorite color by saying, " \
-                        "what's my favorite color?"
+                        " ですね。" \
+                        "今度は、私の色はなに？ と聞いてみてください。"
+        reprompt_text = "今度は、私の色はなに？ と聞いてみてください。"
     else:
-        speech_output = "I'm not sure what your favorite color is. " \
-                        "Please try again."
-        reprompt_text = "I'm not sure what your favorite color is. " \
-                        "You can tell me your favorite color by saying, " \
-                        "my favorite color is red."
+        speech_output = "あなたの好きな色がなんなのか、よくわかりません。" \
+                        "もう一度試してください。"
+        reprompt_text = "あなたの好きな色がなんなのか、よくわかりません。" \
+                        "あなたの好きな色を言ってください。例えば、 " \
+                        "私の色は 赤 です。と、言ってください。"
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
@@ -111,12 +110,13 @@ def get_color_from_session(intent, session):
 
     if session.get('attributes', {}) and "favoriteColor" in session.get('attributes', {}):
         favorite_color = session['attributes']['favoriteColor']
-        speech_output = "Your favorite color is " + favorite_color + \
-                        ". Goodbye."
+        speech_output = "貴様の好きな色は " + favorite_color + \
+                        " か。じゃっ。"
         should_end_session = True
     else:
-        speech_output = "I'm not sure what your favorite color is. " \
-                        "You can say, my favorite color is red."
+        speech_output = "あなたの好きな色がよくわかりません。" \
+                        "あなたの好きな色を言ってください。例えば、 " \
+                        "私の色は 赤 です。と、言ってください。"
         should_end_session = False
 
     # Setting reprompt_text to None signifies that we do not want to reprompt
