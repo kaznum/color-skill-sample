@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This sample demonstrates a simple skill built with the Amazon Alexa Skills Kit.
 The Intent Schema, Custom Slots, and Sample Utterances for this skill, as well
